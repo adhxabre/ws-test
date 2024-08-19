@@ -2,17 +2,25 @@ import { Icon } from "@iconify/react";
 import { useEffect, useRef, useState } from "react";
 
 export default function Home() {
-	const [name, setName] = useState<string>("");
+	const [name] = useState<string[]>([
+		"AsepKopling",
+		"RusdiKereta",
+		"CecepMendiang",
+		"BudiTerongBalado",
+		"JokoCopyPaste",
+		"FerdiLooksmaxxing",
+		"SantosoKapalLewd",
+		"MuhdiPetrus",
+	]);
 	const [ws, setWs] = useState<WebSocket | null>(null);
 	const [messages, setMessages] = useState<string[]>([]);
 	const messageRef = useRef<HTMLInputElement>(null);
 
 	useEffect(() => {
-		const username = prompt("Please enter your name: ") ?? "No name";
-		setName(username);
+		const randomIdx: number = Math.floor(Math.random() * name.length);
 
 		const websocket = new WebSocket(
-			`ws://localhost:8080/ws?username=${username}`,
+			`ws://34.50.70.104/websocket/ws?username=${name[randomIdx]}`,
 		);
 		setWs(websocket);
 
@@ -42,7 +50,7 @@ export default function Home() {
 		return () => {
 			websocket.close();
 		};
-	}, []);
+	}, [name]);
 
 	const addMessage = (message: string) => {
 		setMessages((prevMsg) => [...prevMsg, message]);
@@ -64,35 +72,37 @@ export default function Home() {
 	};
 
 	return (
-		<div className="w-full h-screen bg-neutral-100 flex justify-center items-center">
-			<div className="w-[460px] h-5/6 bg-white shadow-md rounded-xl flex flex-col items-center">
-				<div id="container" className="w-full h-full p-4">
-					{messages.map((msg, idx) => (
-						<p
-							className="w-full h-auto break-all text-pretty text-sm text-left text-neutral-800 font-normal hyphens-auto"
-							key={idx}
-							dangerouslySetInnerHTML={{ __html: msg }}
-						/>
-					))}
-				</div>
-
-				<div className="w-full p-4">
-					<form onSubmit={handleSendMessage}>
-						<div className="relative w-full flex gap-4 items-center bg-white rounded-lg border border-neutral-300 shadow-md p-2">
-							<input
-								type="text"
-								placeholder="Your message"
-								ref={messageRef}
-								className="w-full h-full bg-inherit border border-neutral-400 outline-0 outline-none p-2 rounded-md duration-200 ease-out focus:border-neutral-600 font-normal text-neutral-800 placeholder:text-neutral-200 placeholder:font-light"
+		<div className="w-full h-screen bg-[url(/wallpaperflare.com_wallpaper.jpg)] bg-cover bg-center bg-no-repeat">
+			<div className="w-full h-full backdrop-blur-sm backdrop-brightness-50 flex justify-center items-center">
+				<div className="w-[460px] h-5/6 bg-white shadow-md rounded-xl flex flex-col items-center">
+					<div id="container" className="w-full h-full p-4">
+						{messages.map((msg, idx) => (
+							<p
+								className="w-full h-auto break-all text-pretty text-sm text-left text-neutral-800 font-normal hyphens-auto"
+								key={idx}
+								dangerouslySetInnerHTML={{ __html: msg }}
 							/>
-							<button
-								type="submit"
-								className="w-6 h-6 flex justify-center items-center text-neutral-800 text-lg"
-							>
-								<Icon icon="carbon:send-filled" />
-							</button>
-						</div>
-					</form>
+						))}
+					</div>
+
+					<div className="w-full p-4">
+						<form onSubmit={handleSendMessage}>
+							<div className="relative w-full flex gap-4 items-center bg-white rounded-lg border border-neutral-300 shadow-md p-2">
+								<input
+									type="text"
+									placeholder="Your message"
+									ref={messageRef}
+									className="w-full h-full bg-inherit border border-neutral-400 outline-0 outline-none p-2 rounded-md duration-200 ease-out focus:border-neutral-600 font-normal text-neutral-800 placeholder:text-neutral-200 placeholder:font-light"
+								/>
+								<button
+									type="submit"
+									className="w-6 h-6 flex justify-center items-center text-neutral-800 text-lg"
+								>
+									<Icon icon="carbon:send-filled" />
+								</button>
+							</div>
+						</form>
+					</div>
 				</div>
 			</div>
 		</div>
