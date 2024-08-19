@@ -20,7 +20,7 @@ export default function Home() {
 		const randomIdx: number = Math.floor(Math.random() * name.length);
 
 		const websocket = new WebSocket(
-			`ws://34.50.70.104/websocket/ws?username=${name[randomIdx]}`,
+			`wss://34.50.70.104/websocket/ws?username=${name[randomIdx]}`,
 		);
 		setWs(websocket);
 
